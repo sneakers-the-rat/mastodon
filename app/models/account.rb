@@ -15,6 +15,10 @@
 #  avatar_remote_url             :string
 #  avatar_storage_schema_version :integer
 #  avatar_updated_at             :datetime
+#  cid_key_type                  :integer
+#  cid_private_key               :string
+#  cid_public_key                :string
+#  cid_uri                       :string
 #  discoverable                  :boolean
 #  display_name                  :string           default(""), not null
 #  domain                        :string
@@ -99,6 +103,7 @@ class Account < ApplicationRecord
 
   include Account::Associations
   include Account::Avatar
+  include Account::Cid
   include Account::Counters
   include Account::FaspConcern
   include Account::FinderConcern
@@ -489,6 +494,8 @@ class Account < ApplicationRecord
     keypair = OpenSSL::PKey::RSA.new(2048)
     self.private_key = keypair.to_pem
     self.public_key  = keypair.public_key.to_pem
+
+    generate_cid_keys
   end
 
   def normalize_domain

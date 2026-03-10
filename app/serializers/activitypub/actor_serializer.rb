@@ -22,6 +22,7 @@ class ActivityPub::ActorSerializer < ActivityPub::Serializer
   attribute :featured_collections, if: -> { Mastodon::Feature.collections_enabled? }
 
   has_one :public_key, serializer: ActivityPub::PublicKeySerializer
+  has_one :assertion_method, serializer: ActivityPub::CidPublicKeySerializer
 
   has_many :virtual_tags, key: :tag
   has_many :virtual_attachments, key: :attachment
@@ -121,6 +122,10 @@ class ActivityPub::ActorSerializer < ActivityPub::Serializer
   end
 
   def public_key
+    object
+  end
+
+  def assertion_method
     object
   end
 

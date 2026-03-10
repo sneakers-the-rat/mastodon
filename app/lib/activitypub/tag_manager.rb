@@ -80,6 +80,10 @@ class ActivityPub::TagManager
     [uri_for(target), '#main-key'].join
   end
 
+  def cid_key_uri_for(target)
+    [uri_for(target), "##{target.cid_key_type}-key"].join
+  end
+
   def uri_for_username(username)
     account_url(username: username)
   end
